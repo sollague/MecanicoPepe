@@ -15,6 +15,8 @@ $cliente = $_SESSION['cliente'] ?? '';
 $cedula = $_SESSION['cedula'] ?? '';
 $correo = $_SESSION['correo'] ?? '';
 $telefono = $_SESSION['telefono'] ?? '';
+$tipoMantenimiento =$_SESSION['tipo_mantenimiento'] ?? '';
+$trabajos =$_SESSION['trabajos'] ?? '';
 $vehiculo = $_SESSION['vehiculo'] ?? '';
 
 // ================= DATOS GENERALES =================
@@ -55,12 +57,22 @@ $mecanico = $_SESSION['mecanico'] ?? null;
 
         <p><strong>Mecánico:</strong> <?= $mecanico['nombre'] ?></p>
         <p>
-            Exp: <?= $mecanico['exp'] ?> |
+            Exp: <?= $mecanico['experiencia'] ?> |
             ⭐ <?= $mecanico['rating'] ?>
         </p>
 
         <!-- Fecha del servicio -->
         <p><strong>Fecha:</strong> <?= $fecha ?></p>
+
+        <p>
+            <strong>Tipo:</strong>
+            <?= $tipoMantenimiento ?>
+        </p>
+
+        <p>
+            <strong>Trabajos realizados:</strong><br>
+            <?= $trabajos ?>
+        </p>
 
         <hr>
 
@@ -74,10 +86,10 @@ $mecanico = $_SESSION['mecanico'] ?? null;
 
             <!-- Recorre todos los servicios seleccionados -->
             <?php foreach ($servicios as $s): ?>
-                <tr>
-                    <td><?= $s['nombre'] ?></td>
-                    <td>$<?= $s['precio'] ?></td>
-                </tr>
+            <tr>
+                <td><?= $s['nombre'] ?></td>
+                <td>$<?= $s['precio'] ?></td>
+            </tr>
             <?php endforeach; ?>
 
         </table>

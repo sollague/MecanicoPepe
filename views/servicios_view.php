@@ -1,22 +1,28 @@
 <?php
-// ================= LISTA DE SERVICIOS =================
-// Simulación de base de datos usando un array
 
-$servicios = [
-    ["id" => 1, "nombre" => "Cambio de aceite", "precio" => 25, "desc" => "Lubricación del motor"],
-    ["id" => 2, "nombre" => "Revisión general", "precio" => 40, "desc" => "Chequeo completo"],
-    ["id" => 3, "nombre" => "Alineación y balanceo", "precio" => 30, "desc" => "Mejora estabilidad"],
-    ["id" => 4, "nombre" => "Cambio de frenos", "precio" => 60, "desc" => "Sistema de seguridad"]
-];
+require_once("../models/MecanicoPepe.php");
 
-// ================= LISTA DE MECÁNICOS =================
-// Simulación de perfiles de mecánicos con experiencia y rating
+$model = new MecanicoPepe();
 
-$mecanicos = [
-    ["nombre" => "Juan", "exp" => "5 años", "rating" => "4.5"],
-    ["nombre" => "Carlos", "exp" => "8 años", "rating" => "4.8"],
-    ["nombre" => "Pedro", "exp" => "3 años", "rating" => "4.2"]
-];
+/*
+|--------------------------------------------------------------------------
+| OBTENER SERVICIOS
+|--------------------------------------------------------------------------
+*/
+
+$servicios = $model->executeQuery(
+    "SELECT * FROM servicios"
+);
+
+/*
+|--------------------------------------------------------------------------
+| OBTENER MECÁNICOS
+|--------------------------------------------------------------------------
+*/
+
+$mecanicos = $model->executeQuery(
+    "SELECT * FROM mecanicos"
+);
 ?>
 
 <!DOCTYPE html>
@@ -24,73 +30,119 @@ $mecanicos = [
 
 <head>
     <title>Servicios</title>
-
-    <!-- Estilos globales del sistema -->
     <link rel="stylesheet" href="../styles/style.css">
+
 </head>
 
 <body>
 
     <div class="container">
 
-        <!-- Título del módulo -->
+
         <h2>Solicitar Servicio</h2>
 
-        <!-- ================= FORMULARIO PRINCIPAL ================= -->
-        <!-- Envía datos al controlador para procesar factura -->
+        <!-- FORMULARIO -->
+
         <form method="POST" action="../controllers/ServicioController.php">
 
-            <!-- ================= DATOS DEL CLIENTE ================= -->
+            <!-- DATOS CLIENTE -->
+
             <h3>Datos del cliente</h3>
 
             <input type="text" name="cliente" placeholder="Nombre completo" required>
+
             <input type="text" name="cedula" placeholder="Cédula" required>
+
             <input type="email" name="correo" placeholder="Correo" required>
+
             <input type="text" name="telefono" placeholder="Teléfono" required>
+
             <input type="text" name="vehiculo" placeholder="Vehículo" required>
 
-            <!-- ================= SELECCIÓN DE MECÁNICO ================= -->
+            <!-- MECÁNICOS -->
+
             <h3>Selecciona un mecánico</h3>
 
-            <!-- Recorre lista de mecánicos -->
-            <?php foreach ($mecanicos as $index => $m): ?>
-                <div class="box">
+            <?php foreach ($mecanicos as $m): ?>
 
-                    <!-- Radio button: solo permite elegir uno -->
-                    <input type="radio" name="mecanico" value="<?= $index ?>" required>
+            <div class="box">
 
-                    <strong><?= $m['nombre'] ?></strong><br>
+                <input type="radio" name="mecanico" value="<?= $m['id'] ?>" required>
 
-                    Experiencia: <?= $m['exp'] ?><br>
+                <strong>
+                    <?= $m['nombre'] ?>
+                </strong>
 
-                    Calificación: ⭐ <?= $m['rating'] ?>
+                <br>
 
-                </div>
+                Experiencia:
+                <?= $m['experiencia'] ?>
+
+                <br>
+
+                ⭐ <?= $m['rating'] ?>
+
+            </div>
+
             <?php endforeach; ?>
 
-            <!-- ================= SERVICIOS ================= -->
+            <!-- SERVICIOS -->
+
             <h3>Servicios</h3>
 
-            <!-- Recorre lista de servicios disponibles -->
             <?php foreach ($servicios as $s): ?>
-                <div class="box">
 
-                    <!-- Checkbox: permite seleccionar varios -->
-                    <input type="checkbox" name="servicios[]" value="<?= $s['id'] ?>">
+            <div class="box">
 
-                    <strong><?= $s['nombre'] ?></strong> - $<?= $s['precio'] ?><br>
+                <input type="checkbox" name="servicios[]" value="<?= $s['id'] ?>">
 
-                    <small><?= $s['desc'] ?></small>
+                <strong>
+                    <?= $s['nombre'] ?>
+                </strong>
 
-                </div>
+                - $<?= $s['precio'] ?>
+
+                <br>
+
+                <small>
+                    <?= $s['descripcion'] ?>
+                </small>
+
+            </div>
+
             <?php endforeach; ?>
 
-            <!-- Botón final -->
-            <button type="submit">Generar factura</button>
+            <h3>Tipo de mantenimiento</h3>
+
+            <div class="radio-group">
+
+                <label class="radio-box">
+                    <input type="radio" name="tipo_mantenimiento" value="Preventivo" required>
+
+                    Preventivo
+                </label>
+
+                <label class="radio-box">
+                    <input type="radio" name="tipo_mantenimiento" value="Correctivo" required>
+
+                    Correctivo
+                </label>
+
+            </div>
+
+            <h3>Trabajos realizados</h3>
+
+            <textarea name="trabajos" placeholder="Describe los trabajos realizados..." required></textarea>
+
+
+            <button type="submit">
+                Generar factura
+            </button>
 
         </form>
 
     </div>
+
 </body>
 
 </html>

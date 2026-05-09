@@ -1,20 +1,30 @@
 <?php
-session_start(); // Inicia la sesión para poder guardar datos del usuario
+session_start();
 
-// ================= VALIDACIÓN DE LOGIN =================
+require_once("../models/MecanicoPepe.php");
 
-// Verifica si el usuario y contraseña enviados por el formulario son correctos
-if ($_POST['usuario'] == "admin" && $_POST['password'] == "1234") {
+$model = new MecanicoPepe();
 
-    // Si son correctos, se guarda el usuario en sesión
-    $_SESSION['usuario'] = "admin";
+$usuario = $_POST['usuario'];
+$password = $_POST['password'];
 
-    // Redirige al dashboard (pantalla principal del sistema)
-    header("Location: ../views/dashboard_view.php");
-    exit();
+$sql = "
+SELECT * FROM usuarios
+WHERE usuario = '$usuario'
+AND password = '$password'
+";
+
+$resultado = $model->executeQuery($sql);
+
+if (count($resultado) > 0) {
+
+    $_SESSION['usuario'] = $usuario;
+
+    header(
+        "Location: ../views/dashboard_view.php"
+    );
 
 } else {
 
-    // Si los datos son incorrectos, muestra un mensaje de error
     echo "Credenciales incorrectas";
 }

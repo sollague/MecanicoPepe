@@ -1,140 +1,384 @@
-/* RESET SUAVE */
-* {
+/* ================= VARIABLES ================= */
+:root {
+    --primary: #6b21a8; 
+    --primary-hover: #581c87;
+    --primary-light: rgba(107, 33, 168, 0.15);
+    --bg-body: #f8fafc;
+    --bg-surface: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --radius-md: 8px;
+    --radius-sm: 6px;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* ================= RESET SUAVE ================= */
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* BODY */
+/* ================= BODY ================= */
 body {
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    background: linear-gradient(135deg, #f4f6f8, #e9ecf3);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    line-height: 1.5;
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* CONTENEDOR PRINCIPAL */
+/* ================= CONTENEDOR PRINCIPAL ================= */
 .container {
-    width: 100%;
-    max-width: 650px;
-    margin: 50px auto;
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    width: 95%; 
+    max-width: 1100px; 
+    margin: 40px auto;
+    background: var(--bg-surface);
+    padding: 32px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
 }
 
-/* TITULOS */
+/* ================= TITULOS ================= */
 h2 {
     text-align: center;
-    margin-bottom: 20px;
-    color: #2d2d2d;
+    margin-bottom: 24px;
+    color: var(--text-main);
+    font-weight: 600;
+    font-size: 1.5rem;
+    letter-spacing: -0.025em;
 }
 
 h3 {
-    margin: 20px 0 10px;
-    color: #444;
+    margin: 24px 0 12px;
+    color: var(--text-main);
+    font-weight: 600;
+    font-size: 1.1rem;
 }
 
-/* INPUTS */
+/* ================= INPUTS ================= */
 input[type="text"],
 input[type="password"],
 input[type="email"],
-input[type="tel"] {
+input[type="tel"],
+input[type="number"] {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    transition: 0.2s;
+    padding: 10px 12px;
+    margin-bottom: 16px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    background-color: #fff;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 input:focus {
-    border-color: #6b21a8;
     outline: none;
-    box-shadow: 0 0 5px rgba(107,33,168,0.3);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
 }
 
-/* BOTONES */
+input::placeholder {
+    color: #94a3b8;
+}
+
+/* ================= BOTONES ================= */
 button {
     width: 100%;
-    background: linear-gradient(135deg, #6b21a8, #4c1d95);
+    background-color: var(--primary);
     color: white;
-    padding: 12px;
+    padding: 12px 16px;
     border: none;
-    border-radius: 6px;
-    font-weight: bold;
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    font-size: 0.95rem;
     cursor: pointer;
-    transition: 0.3s;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    box-shadow: var(--shadow-sm);
 }
 
 button:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    background-color: var(--primary-hover);
 }
 
-/* TARJETAS (servicios y mecánicos) */
+button:active {
+    transform: translateY(1px);
+}
+
+.btn-buscar {
+    width: 100%;
+    margin-top: 8px;
+}
+
+/* ================= TARJETAS ================= */
 .box {
-    border: 1px solid #e0e0e0;
-    padding: 12px;
-    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    padding: 16px;
+    border-radius: var(--radius-md);
     margin-bottom: 12px;
-    background: #fafafa;
-    transition: 0.2s;
+    background: var(--bg-surface);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .box:hover {
-    background: #f0f0f5;
-    border-color: #d0d0ff;
+    border-color: var(--primary);
+    box-shadow: var(--shadow-sm);
 }
 
-/* TABLA */
+/* ================= TABLA ================= */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 15px;
+    margin-top: 16px;
+    font-size: 0.95rem;
 }
 
 th {
-    background: #6b21a8;
+    background-color: var(--primary);
     color: white;
-    padding: 10px;
+    padding: 12px;
+    text-align: left;
+    font-weight: 500;
 }
+
+th:first-child { border-top-left-radius: var(--radius-sm); }
+th:last-child { border-top-right-radius: var(--radius-sm); }
 
 td {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
+    padding: 12px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-main);
 }
 
-/* TOTAL */
+tr:last-child td {
+    border-bottom: none;
+}
+
+/* ================= TOTAL ================= */
 .total {
-    margin-top: 15px;
-    font-size: 22px;
-    font-weight: bold;
+    margin-top: 20px;
+    font-size: 1.25rem;
+    font-weight: 600;
     text-align: right;
+    color: var(--text-main);
+    padding-top: 16px;
+    border-top: 2px dashed var(--border-color);
 }
 
-/* LINKS */
+/* ================= LINKS & TEXTOS ================= */
 a {
     display: inline-block;
-    margin-top: 15px;
-    color: #6b21a8;
+    margin-top: 16px;
+    color: var(--primary);
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 500;
+    transition: color 0.2s ease;
 }
 
 a:hover {
+    color: var(--primary-hover);
     text-decoration: underline;
 }
 
-/* TEXTO SUAVE */
 small {
-    color: #666;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    display: block;
+    margin-top: 4px; /* Separación positiva hacia abajo */
+    margin-left: 24px; /* Alinea el texto con el título, saltándose el checkbox */
+    margin-bottom: 0;
 }
 
-/* RESPONSIVE */
+/* ================= ALINEACIÓN DE CHECKBOXES ================= */
+input[type="checkbox"] {
+    margin-right: 8px;
+    transform: scale(1.15); /* Hace el cuadrito un poco más grande y fácil de clickear */
+    cursor: pointer;
+    accent-color: var(--primary); /* Pinta el checkbox de morado cuando se selecciona (en navegadores modernos) */
+    vertical-align: middle;
+}
+
+.box label, 
+.box strong {
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+/* ================= RESPONSIVE ================= */
 @media (max-width: 700px) {
     .container {
-        margin: 20px;
-        padding: 20px;
+        margin: 16px;
+        padding: 24px;
+        border-radius: var(--radius-md);
     }
+}
+
+/* ============================= */
+/* RADIO BUTTONS */
+/* ============================= */
+
+.radio-group {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap; /* Permite que pasen a la siguiente línea en pantallas pequeñas */
+}
+
+.radio-box {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.radio-box:hover {
+    border-color: var(--primary);
+    background-color: var(--bg-body);
+}
+
+/* Efecto visual cuando el radio está seleccionado */
+.radio-box:has(input[type="radio"]:checked) {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 1px var(--primary);
+    background-color: var(--primary-light);
+}
+
+.radio-box input[type="radio"] {
+    margin-right: 10px;
+    transform: scale(1.15); /* Mismo tamaño que los checkboxes */
+    cursor: pointer;
+    accent-color: var(--primary);
+}
+
+/* ============================= */
+/* TEXTAREA */
+/* ============================= */
+
+textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    background-color: #fff;
+    font-family: inherit; /* Hereda la tipografía limpia del body */
+    font-size: 0.95rem;
+    color: var(--text-main);
+    resize: vertical; /* Permite al usuario estirarlo solo hacia abajo */
+    margin-bottom: 16px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+textarea::placeholder {
+    color: #94a3b8;
+}
+
+/* ================= DASHBOARD MENU ================= */
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.dashboard-header p {
+    color: var(--text-muted);
+    margin-top: 8px;
+    font-size: 0.95rem;
+}
+
+.dashboard-menu {
+    display: grid;
+    /* Crea columnas responsivas automáticamente */
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+}
+/* ================= DASHBOARD MENU ================= */
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.dashboard-header p {
+    color: var(--text-muted);
+    margin-top: 8px;
+    font-size: 0.95rem;
+}
+
+.dashboard-menu {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Obliga a usar exactamente 2 columnas */
+    gap: 24px; /* Espacio uniforme entre tarjetas */
+    max-width: 650px; /* Evita que las tarjetas floten hacia los extremos */
+    margin: 40px auto 0; /* Centra toda la cuadrícula en la pantalla */
+}
+
+.dashboard-menu a {
+    display: flex;
+    flex-direction: column; /* Pone el ícono arriba y el texto abajo */
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-surface);
+    border: 2px solid var(--border-color); /* Borde un poco más grueso para dar cuerpo */
+    padding: 32px 20px; /* Área de clic mucho más grande y cómoda */
+    border-radius: var(--radius-md);
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.05rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); /* Animación más fluida */
+    box-shadow: var(--shadow-sm);
+}
+
+.dashboard-menu a:hover {
+    border-color: var(--primary);
+    background-color: var(--primary-light);
+    color: var(--primary-hover);
+    transform: translateY(-4px); /* Se levanta un poco más al pasar el mouse */
+    box-shadow: var(--shadow-md);
+}
+
+.dashboard-menu a span.icon {
+    font-size: 2.2rem;
+    margin-bottom: 12px;
+}
+
+/* Botón de salida ocupa todo el ancho y es más delgado */
+.dashboard-menu a.btn-logout {
+    grid-column: span 2; 
+    flex-direction: row;
+    padding: 16px; 
+    gap: 10px;
+    color: #dc2626;
+    border-color: #fecaca;
+    background-color: #fff;
+    font-size: 1rem;
+}
+
+.dashboard-menu a.btn-logout:hover {
+    background-color: #fef2f2;
+    border-color: #ef4444;
+    color: #b91c1c;
+    transform: translateY(-2px);
 }

@@ -1,93 +1,263 @@
 <?php
-session_start(); // Inicia la sesión para poder guardar datos y usarlos en otras páginas
+session_start();
 
-// ================= VALIDACIÓN INICIAL =================
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-// Verifica que el usuario haya seleccionado al menos un servicio
-if (empty($_POST['servicios'])) {
-    echo "Debes seleccionar al menos un servicio";
-    exit(); // Detiene la ejecución si no hay servicios
+/*
+|--------------------------------------------------------------------------
+| VALIDAR MÉTODO POST
+|--------------------------------------------------------------------------
+*/
+
+if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+
+    header("Location: ../views/servicios_view.php");
+    exit();
 }
 
-// ================= DATOS DEL CLIENTE =================
+/*
+|--------------------------------------------------------------------------
+| IMPORTAR MODELO
+|--------------------------------------------------------------------------
+*/
 
-// Se obtienen los datos enviados desde el formulario
+require_once("../models/MecanicoPepe.php");
+
+/*
+|--------------------------------------------------------------------------
+| CREAR OBJETO
+|--------------------------------------------------------------------------
+*/
+
+$model = new MecanicoPepe();
+
+/*
+|--------------------------------------------------------------------------
+| VALIDAR SERVICIOS
+|--------------------------------------------------------------------------
+*/
+
+if (empty($_POST['servicios'])) {
+
+    header("Location: ../views/servicios_view.php");
+    exit();
+}
+
+/*
+|--------------------------------------------------------------------------
+| DATOS CLIENTE
+|--------------------------------------------------------------------------
+*/
+
 $cliente = $_POST['cliente'];
+
 $cedula = $_POST['cedula'];
+
 $correo = $_POST['correo'];
+
 $telefono = $_POST['telefono'];
+
 $vehiculo = $_POST['vehiculo'];
 
-// ================= VALIDACIONES =================
+$tipoMantenimiento =
+$_POST['tipo_mantenimiento'];
 
-// Validación simple: la cédula debe tener exactamente 10 dígitos
+$trabajos =
+$_POST['trabajos'];
+
+/*
+|--------------------------------------------------------------------------
+| VALIDACIÓN SIMPLE
+|--------------------------------------------------------------------------
+*/
+
 if (strlen($cedula) != 10) {
+
     echo "La cédula debe tener 10 dígitos";
-    exit(); // Detiene el proceso si no cumple
+    exit();
 }
 
-// ================= DATOS DEL SISTEMA =================
+/*
+|--------------------------------------------------------------------------
+| OBTENER MECÁNICO
+|--------------------------------------------------------------------------
+*/
 
-// Lista de servicios disponibles (simulando base de datos)
-$servicios = [
-    1 => ["nombre" => "Cambio de aceite", "precio" => 25],
-    2 => ["nombre" => "Revisión general", "precio" => 40],
-    3 => ["nombre" => "Alineación y balanceo", "precio" => 30],
-    4 => ["nombre" => "Cambio de frenos", "precio" => 60]
-];
+$mecanicoID = $_POST['mecanico'];
 
-// Lista de mecánicos disponibles (simulación)
-$mecanicos = [
-    ["nombre" => "Juan", "exp" => "5 años", "rating" => "4.5"],
-    ["nombre" => "Carlos", "exp" => "8 años", "rating" => "4.8"],
-    ["nombre" => "Pedro", "exp" => "3 años", "rating" => "4.2"]
-];
+$sqlMecanico = "
+SELECT * FROM mecanicos
+WHERE id = $mecanicoID
+";
 
-// ================= SELECCIÓN DE MECÁNICO =================
+$resultadoMecanico =
+$model->executeQuery($sqlMecanico);
 
-// Se obtiene el índice del mecánico seleccionado en el formulario
-$index = $_POST['mecanico'];
+if (count($resultadoMecanico) == 0) {
 
-// Se obtiene el mecánico correspondiente del array
-$mecanicoSeleccionado = $mecanicos[$index];
+    echo "Mecánico no encontrado";
+    exit();
+}
 
-// ================= PROCESAMIENTO DE SERVICIOS =================
+$mecanicoSeleccionado =
+$resultadoMecanico[0];
 
-// Array donde se guardarán los servicios elegidos
+/*
+|--------------------------------------------------------------------------
+| PROCESAR SERVICIOS
+|--------------------------------------------------------------------------
+*/
+
 $serviciosElegidos = [];
 
-// Variable para acumular el total
 $total = 0;
 
-// Recorre los servicios seleccionados por el usuario
-foreach ($_POST['servicios'] as $id) {
+foreach ($_POST['servicios'] as $idServicio) {
 
-    // Agrega el servicio seleccionado al array
-    $serviciosElegidos[] = $servicios[$id];
+    $sqlServicio = "
+    SELECT * FROM servicios
+    WHERE id = $idServicio
+    ";
 
-    // Suma el precio del servicio al total
-    $total += $servicios[$id]['precio'];
+    $resultadoServicio =
+    $model->executeQuery($sqlServicio);
+
+    if (count($resultadoServicio) > 0) {
+
+        $servicio = $resultadoServicio[0];
+
+        $serviciosElegidos[] = $servicio;
+
+        $total += $servicio['precio'];
+    }
 }
 
-// ================= GUARDAR EN SESIÓN =================
+/*
+|--------------------------------------------------------------------------
+| INSERTAR FACTURA
+|--------------------------------------------------------------------------
+*/
 
-// Se guardan todos los datos para usarlos en la factura
+$fecha = date("Y-m-d");
+
+$sqlFactura = "
+INSERT INTO facturas
+(
+    cliente,
+    cedula,
+    correo,
+    telefono,
+    vehiculo,
+    mecanico_id,
+    tipo_mantenimiento,
+    trabajos,
+    total,
+    fecha
+)
+VALUES
+(
+    '$cliente',
+    '$cedula',
+    '$correo',
+    '$telefono',
+    '$vehiculo',
+    $mecanicoID,
+    '$tipoMantenimiento',
+    '$trabajos',
+    $total,
+    '$fecha'
+)
+";
+
+$model->executeNonQuery($sqlFactura);
+
+/*
+|--------------------------------------------------------------------------
+| OBTENER ID FACTURA
+|--------------------------------------------------------------------------
+*/
+
+$facturaData = $model->executeQuery(
+    "SELECT MAX(id) as id FROM facturas"
+);
+
+$facturaID = $facturaData[0]['id'];
+
+/*
+|--------------------------------------------------------------------------
+| INSERTAR DETALLE FACTURA
+|--------------------------------------------------------------------------
+*/
+
+foreach ($serviciosElegidos as $servicio) {
+
+    $servicioID = $servicio['id'];
+
+    $precio = $servicio['precio'];
+
+    $sqlDetalle = "
+    INSERT INTO detalle_factura
+    (
+        factura_id,
+        servicio_id,
+        precio
+    )
+    VALUES
+    (
+        $facturaID,
+        $servicioID,
+        $precio
+    )
+    ";
+
+    $model->executeNonQuery($sqlDetalle);
+}
+
+/*
+|--------------------------------------------------------------------------
+| GUARDAR EN SESSION
+|--------------------------------------------------------------------------
+*/
+
 $_SESSION['cliente'] = $cliente;
+
 $_SESSION['cedula'] = $cedula;
+
 $_SESSION['correo'] = $correo;
+
 $_SESSION['telefono'] = $telefono;
+
 $_SESSION['vehiculo'] = $vehiculo;
-$_SESSION['mecanico'] = $mecanicoSeleccionado;
-$_SESSION['servicios'] = $serviciosElegidos;
+
+$_SESSION['tipo_mantenimiento'] =
+$tipoMantenimiento;
+
+$_SESSION['trabajos'] =
+$trabajos;
+
+$_SESSION['mecanico'] =
+$mecanicoSeleccionado;
+
+$_SESSION['servicios'] =
+$serviciosElegidos;
+
 $_SESSION['total'] = $total;
 
-// Se guarda la fecha actual
-$_SESSION['fecha'] = date("Y-m-d");
+$_SESSION['fecha'] = $fecha;
 
-// Se genera un ID de factura aleatorio
-$_SESSION['factura_id'] = rand(1000, 9999);
+$_SESSION['factura_id'] =
+$facturaID;
 
-// ================= REDIRECCIÓN =================
+/*
+|--------------------------------------------------------------------------
+| REDIRECCIÓN
+|--------------------------------------------------------------------------
+*/
 
-// Redirige a la vista de factura
-header("Location: ../views/factura_view.php");
+header(
+    "Location: ../views/factura_view.php"
+);
+
+exit();
+?>

@@ -2,42 +2,42 @@
 <html>
 
 <head>
+
     <title>Login</title>
 
-    <!-- Conexión al archivo de estilos del sistema -->
-    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet"
+          href="../styles/style.css">
+
 </head>
 
 <body>
 
-    <div class="container">
+<div class="container">
 
-        <!-- Título del sistema -->
-        <h2>MecanicoPepe</h2>
+    <h2>MecanicoPepe</h2>
 
-        <!-- ================= FORMULARIO DE LOGIN ================= -->
+    <form method="POST"
+          action="../controllers/UsuarioController.php">
 
-        <!--
-            method="POST" → envía datos de forma segura
-            action → envía los datos al controlador que valida el login
-        -->
-        <form method="POST" action="../controllers/UsuarioController.php">
+        <label>Usuario:</label>
 
-            <!-- Campo usuario -->
-            <label>Usuario:</label>
-            <input type="text" name="usuario" required>
+        <input type="text"
+               name="usuario"
+               required>
 
-            <!-- Campo contraseña -->
-            <label>Contraseña:</label>
-            <input type="password" name="password" required>
+        <label>Contraseña:</label>
 
-            <!-- Botón de envío -->
-            <button type="submit">Ingresar</button>
+        <input type="password"
+               name="password"
+               required>
 
-        </form>
+        <button type="submit">
+            Ingresar
+        </button>
 
-    </div>
+    </form>
+
+</div>
 
 </body>
-
 </html>
