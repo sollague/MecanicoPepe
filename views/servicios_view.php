@@ -68,6 +68,10 @@ $mecanicos = $model->executeQuery(
             <div class="box">
 
                 <input type="radio" name="mecanico" value="<?= $m['id'] ?>" required>
+<<<<<<< HEAD
+=======
+
+>>>>>>> ce0c85bcebcc1f77ba1f46c47826e98c9b2c414c
                 <strong>
                     <?= $m['nombre'] ?>
                 </strong>

@@ -4,6 +4,7 @@ require_once("../models/MecanicoPepe.php");
 
 $model = new MecanicoPepe();
 
+<<<<<<< HEAD
 $repuestos = $model->executeQuery(
     "SELECT * FROM repuestos"
 );
@@ -20,6 +21,40 @@ if (isset($_GET['editar'])) {
 
     $editar = $resultado[0];
 }
+=======
+/*
+|--------------------------------------------------------------------------
+| BUSCADOR
+|--------------------------------------------------------------------------
+*/
+
+$busqueda = "";
+
+if (isset($_GET['buscar'])) {
+
+    $busqueda = $_GET['buscar'];
+
+    $sql = "
+    SELECT * FROM repuestos
+    WHERE nombre LIKE '%$busqueda%'
+    ";
+
+} else {
+
+    $sql = "
+    SELECT * FROM repuestos
+    ";
+}
+
+/*
+|--------------------------------------------------------------------------
+| OBTENER REPUESTOS
+|--------------------------------------------------------------------------
+*/
+
+$repuestos = $model->executeQuery($sql);
+
+>>>>>>> ce0c85bcebcc1f77ba1f46c47826e98c9b2c414c
 ?>
 
 <!DOCTYPE html>
@@ -29,7 +64,12 @@ if (isset($_GET['editar'])) {
 
     <title>Inventario</title>
 
+<<<<<<< HEAD
     <link rel="stylesheet" href="../styles/style.css">
+=======
+    <link rel="stylesheet"
+          href="../styles/style.css">
+>>>>>>> ce0c85bcebcc1f77ba1f46c47826e98c9b2c414c
 
 </head>
 
@@ -39,6 +79,7 @@ if (isset($_GET['editar'])) {
 
     <h2>Inventario de Repuestos</h2>
 
+<<<<<<< HEAD
     <!-- FORMULARIO -->
 
     <form method="POST"
@@ -142,6 +183,70 @@ if (isset($_GET['editar'])) {
     </tbody>
 
 </table>
+=======
+    <!-- ================= BUSCADOR ================= -->
+
+    <form method="GET">
+
+        <input type="text"
+               name="buscar"
+               placeholder="Buscar repuesto..."
+               value="<?= $busqueda ?>">
+
+        <button type="submit" class="btn-buscar">
+            Buscar
+        </button>
+
+    </form>
+
+    <br>
+
+    <!-- ================= TABLA ================= -->
+
+    <table>
+
+        <tr>
+            <th>Repuesto</th>
+            <th>Stock</th>
+            <th>Precio</th>
+            <th>Estado</th>
+        </tr>
+
+        <?php foreach ($repuestos as $r): ?>
+
+            <tr>
+
+                <td><?= $r['nombre'] ?></td>
+
+                <td><?= $r['stock'] ?></td>
+
+                <td>$<?= $r['precio'] ?></td>
+
+                <td>
+
+                    <?php
+                    if ($r['stock'] <= 3) {
+
+                        echo "🔴 Bajo";
+
+                    } elseif ($r['stock'] <= 8) {
+
+                        echo "🟡 Medio";
+
+                    } else {
+
+                        echo "🟢 Disponible";
+                    }
+                    ?>
+
+                </td>
+
+            </tr>
+
+        <?php endforeach; ?>
+
+    </table>
+>>>>>>> ce0c85bcebcc1f77ba1f46c47826e98c9b2c414c
 
     <br>
 
@@ -150,6 +255,7 @@ if (isset($_GET['editar'])) {
     </a>
 
 </div>
+<<<<<<< HEAD
 <script>
 
 const buscador =
@@ -188,4 +294,9 @@ buscador.addEventListener("keyup", function () {
 
 
 </body>
+=======
+
+</body>
+
+>>>>>>> ce0c85bcebcc1f77ba1f46c47826e98c9b2c414c
 </html>

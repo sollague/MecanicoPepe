@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -157,5 +158,47 @@
         });
     </script>
     
+=======
+<html>
+
+<head>
+
+    <title>Login</title>
+
+    <link rel="stylesheet"
+          href="../styles/style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>MecanicoPepe</h2>
+
+    <form method="POST"
+          action="../controllers/UsuarioController.php">
+
+        <label>Usuario:</label>
+
+        <input type="text"
+               name="usuario"
+               required>
+
+        <label>Contraseña:</label>
+
+        <input type="password"
+               name="password"
+               required>
+
+        <button type="submit">
+            Ingresar
+        </button>
+
+    </form>
+
+</div>
+
+>>>>>>> ce0c85bcebcc1f77ba1f46c47826e98c9b2c414c
 </body>
 </html>

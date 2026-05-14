@@ -1,14 +1,63 @@
 <?php
+<<<<<<< HEAD
 session_start();
+=======
+>>>>>>> ce0c85bcebcc1f77ba1f46c47826e98c9b2c414c
 
 require_once("../models/MecanicoPepe.php");
 
 $model = new MecanicoPepe();
 
+<<<<<<< HEAD
+=======
+/*
+|--------------------------------------------------------------------------
+| GUARDAR VEHÍCULO
+|--------------------------------------------------------------------------
+*/
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    $cliente = $_POST['cliente'];
+    $marca = $_POST['marca'];
+    $modelo = $_POST['modelo'];
+    $anio = $_POST['anio'];
+    $placa = $_POST['placa'];
+
+    $sql = "
+    INSERT INTO vehiculos
+    (
+        cliente,
+        marca,
+        modelo,
+        anio,
+        placa
+    )
+    VALUES
+    (
+        '$cliente',
+        '$marca',
+        '$modelo',
+        $anio,
+        '$placa'
+    )
+    ";
+
+    $model->executeNonQuery($sql);
+}
+
+/*
+|--------------------------------------------------------------------------
+| OBTENER VEHÍCULOS
+|--------------------------------------------------------------------------
+*/
+
+>>>>>>> ce0c85bcebcc1f77ba1f46c47826e98c9b2c414c
 $vehiculos = $model->executeQuery(
     "SELECT * FROM vehiculos"
 );
 
+<<<<<<< HEAD
 $editar = null;
 
 if (isset($_GET['editar'])) {
@@ -25,6 +74,8 @@ if (isset($_GET['editar'])) {
         }
     }
 }
+=======
+>>>>>>> ce0c85bcebcc1f77ba1f46c47826e98c9b2c414c
 ?>
 
 <!DOCTYPE html>
@@ -33,8 +84,15 @@ if (isset($_GET['editar'])) {
 <head>
 
     <title>Vehículos</title>
+<<<<<<< HEAD
     <link rel="stylesheet" href="../styles/style.css">
     
+=======
+
+    <link rel="stylesheet"
+          href="../styles/style.css">
+
+>>>>>>> ce0c85bcebcc1f77ba1f46c47826e98c9b2c414c
 </head>
 
 <body>
@@ -43,6 +101,7 @@ if (isset($_GET['editar'])) {
 
     <h2>Registro de Vehículos</h2>
 
+<<<<<<< HEAD
     <?php if (isset($_SESSION['success'])): ?>
         <div class="alert alert-success">
             <?= htmlspecialchars($_SESSION['success']) ?>
@@ -69,16 +128,35 @@ if (isset($_GET['editar'])) {
                name="marca"
                placeholder="Marca (ej: Toyota)"
                value="<?= htmlspecialchars($editar['marca'] ?? '') ?>"
+=======
+    <!-- FORMULARIO -->
+
+    <form method="POST">
+
+        <input type="text"
+               name="cliente"
+               placeholder="Cliente"
+               required>
+
+        <input type="text"
+               name="marca"
+               placeholder="Marca"
+>>>>>>> ce0c85bcebcc1f77ba1f46c47826e98c9b2c414c
                required>
 
         <input type="text"
                name="modelo"
+<<<<<<< HEAD
                placeholder="Modelo (ej: Corolla)"
                value="<?= htmlspecialchars($editar['modelo'] ?? '') ?>"
+=======
+               placeholder="Modelo"
+>>>>>>> ce0c85bcebcc1f77ba1f46c47826e98c9b2c414c
                required>
 
         <input type="number"
                name="anio"
+<<<<<<< HEAD
                placeholder="Año (ej: 2023)"
                value="<?= htmlspecialchars($editar['anio'] ?? '') ?>"
                required
@@ -167,6 +245,60 @@ if (isset($_GET['editar'])) {
 
     <a href="dashboard_view.php" style="font-size: 16px;">
         Volver al Dashboard
+=======
+               placeholder="Año"
+               required>
+
+        <input type="text"
+               name="placa"
+               placeholder="Placa"
+               required>
+
+        <button type="submit">
+            Guardar vehículo
+        </button>
+
+    </form>
+
+    <br>
+
+    <!-- TABLA -->
+
+    <table>
+
+        <tr>
+            <th>Cliente</th>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Año</th>
+            <th>Placa</th>
+        </tr>
+
+        <?php foreach ($vehiculos as $v): ?>
+
+            <tr>
+
+                <td><?= $v['cliente'] ?></td>
+
+                <td><?= $v['marca'] ?></td>
+
+                <td><?= $v['modelo'] ?></td>
+
+                <td><?= $v['anio'] ?></td>
+
+                <td><?= $v['placa'] ?></td>
+
+            </tr>
+
+        <?php endforeach; ?>
+
+    </table>
+
+    <br>
+
+    <a href="dashboard_view.php">
+        ⬅ Volver
+>>>>>>> ce0c85bcebcc1f77ba1f46c47826e98c9b2c414c
     </a>
 
 </div>

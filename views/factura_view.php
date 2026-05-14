@@ -8,8 +8,11 @@ $servicios = $_SESSION['servicios'] ?? [];
 
 // Total de la factura (si no existe, 0)
 $total = $_SESSION['total'] ?? 0;
+<<<<<<< HEAD
 $subtotal = $_SESSION['subtotal'] ?? 0;
 $iva = $_SESSION['iva'] ?? 0;
+=======
+>>>>>>> ce0c85bcebcc1f77ba1f46c47826e98c9b2c414c
 
 // ================= DATOS DEL CLIENTE =================
 
@@ -98,6 +101,7 @@ $mecanico = $_SESSION['mecanico'] ?? null;
 
         <!-- ================= TOTAL ================= -->
 
+<<<<<<< HEAD
         <p><strong>Subtotal:</strong> $<?= number_format($subtotal, 2) ?></p>
 
         <p><strong>IVA 15%:</strong> $<?= number_format($iva, 2) ?></p>
@@ -106,6 +110,9 @@ $mecanico = $_SESSION['mecanico'] ?? null;
             <strong>Total:</strong>
             $<?= number_format($total, 2) ?>
         </p>
+=======
+        <p class="total">Total: $<?= $total ?></p>
+>>>>>>> ce0c85bcebcc1f77ba1f46c47826e98c9b2c414c
 
         <!-- Botón para volver al dashboard -->
         <a href="dashboard_view.php">⬅ Volver</a>

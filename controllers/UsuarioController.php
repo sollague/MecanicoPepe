@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 /**
  * ============================================================================
  * USUARIO CONTROLLER - REFACTORIZADO A PDO
@@ -280,3 +281,34 @@ if ($usuario === $usuarioValido && $password === $passwordValida) {
  */
 
 ?>
+=======
+session_start();
+
+require_once("../models/MecanicoPepe.php");
+
+$model = new MecanicoPepe();
+
+$usuario = $_POST['usuario'];
+$password = $_POST['password'];
+
+$sql = "
+SELECT * FROM usuarios
+WHERE usuario = '$usuario'
+AND password = '$password'
+";
+
+$resultado = $model->executeQuery($sql);
+
+if (count($resultado) > 0) {
+
+    $_SESSION['usuario'] = $usuario;
+
+    header(
+        "Location: ../views/dashboard_view.php"
+    );
+
+} else {
+
+    echo "Credenciales incorrectas";
+}
+>>>>>>> ce0c85bcebcc1f77ba1f46c47826e98c9b2c414c
