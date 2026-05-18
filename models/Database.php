@@ -1,22 +1,4 @@
 <?php
-/**
- * ============================================================================
- * CLASE DATABASE - CONEXIÓN PDO CON SEGURIDAD MEJORADA
- * ============================================================================
- *
- * Esta clase reemplaza la antigua conexión mysqli de MecanicoPepe.php
- * Implementa PDO (PHP Data Objects) para:
- *
- * ✓ Prepared Statements (previene SQL Injection)
- * ✓ Mejores transacciones
- * ✓ Manejo de errores robusto
- * ✓ Compatible con múltiples bases de datos (MySQL, PostgreSQL, etc.)
- * ✓ Comentarios detallados en cada método
- *
- * UBICACIÓN: models/Database.php
- * REEMPLAZA: models/MecanicoPepe.php (la antigua conexión)
- * ============================================================================
- */
 
 class Database
 {
@@ -50,7 +32,7 @@ class Database
 
     /**
      * @var string $password
-     * Contraseña de MySQL (vacía en XAMPP por defecto)
+     * Contraseña de MySQL
      */
     private $password = "";
 
@@ -220,41 +202,4 @@ class Database
         $this->conexion = null;
     }
 }
-
-/**
- * ============================================================================
- * CÓMO USAR ESTA CLASE EN TU PROYECTO
- * ============================================================================
- *
- * PASO 1:
- *
- *   require_once '../models/Database.php';
- *   $db = new Database();
- *   $servicios = $db->executeQuery("SELECT * FROM servicios");
- *
- * PASO 2: Consultas seguras
- *
- *   $sql = "SELECT * FROM usuarios WHERE usuario = ?";
- *   $resultado = $db->executeQuery($sql, [$usuario]);
- *
- * PASO 3: INSERT con ID
- *
- *   $db->executeNonQuery(
- *       "INSERT INTO repuestos (nombre, precio, stock) VALUES (?, ?, ?)",
- *       ['Aceite', 45.99, 10]
- *   );
- *   $id = $db->getLastInsertId();
- *
- * PASO 4: Transacciones
- *
- *   try {
- *       $db->beginTransaction();
- *       $db->commit();
- *   } catch (Exception $e) {
- *       $db->rollback();
- *   }
- *
- * ============================================================================
- */
-
 ?>
