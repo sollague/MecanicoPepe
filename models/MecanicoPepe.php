@@ -3,8 +3,8 @@
 class MecanicoPepe
 {
     private $conexion;
-    private $maxReintentos = 3; // Reintentos en caso de fallo de conexión
-    private $tiempoEspera = 1; // Segundos entre reintentos
+    private $maxReintentos = 3;
+    private $tiempoEspera = 1;
 
     public function __construct()
     {
@@ -37,9 +37,11 @@ class MecanicoPepe
                     throw new Exception($this->conexion->connect_error);
                 }
 
-                // Conexión exitosa, salir del bucle
+                // Conexión exitosa
                 $this->conexion->set_charset("utf8mb4");
-                error_log("[MecanicoPepe] Conexión establecida correctamente");
+                error_log(
+                    "[MecanicoPepe] Conexión establecida (intento $intento)",
+                );
                 return;
             } catch (Exception $e) {
                 error_log(
@@ -50,7 +52,7 @@ class MecanicoPepe
                 // Si es el último intento, lanzar excepción
                 if ($intento === $this->maxReintentos) {
                     throw new Exception(
-                        "No se pudo conectar a la base de datos después de $this->maxReintentos intentos",
+                        "No se pudo conectar a la BD después de $this->maxReintentos intentos",
                     );
                 }
 
@@ -83,7 +85,7 @@ class MecanicoPepe
     public function executeQuery($sql, $parametros = [])
     {
         try {
-            // Verificar que la conexión esté activa
+            // Verificar conexión antes de ejecutar
             $this->verificarConexion();
 
             if (!empty($parametros)) {
@@ -97,7 +99,7 @@ class MecanicoPepe
 
                 $tipos = $this->detectarTipos($parametros);
 
-                // Validar que los tipos coincidan con los parámetros
+                // Validar que haya mismo número de tipos y parámetros
                 if (strlen($tipos) !== count($parametros)) {
                     throw new Exception("Cantidad de parámetros no coincide");
                 }
@@ -110,18 +112,17 @@ class MecanicoPepe
 
                 $resultado = $stmt->get_result();
 
-                // Verificar si hay resultados
+                // Si $resultado es falso, devolver array vacío
                 if (!$resultado) {
-                    throw new Exception(
-                        "Error al obtener resultados: " . $stmt->error,
-                    );
+                    $stmt->close();
+                    return [];
                 }
 
                 $datos = $resultado->fetch_all(MYSQLI_ASSOC);
 
                 $stmt->close();
 
-                return $datos ?: []; // Retornar array vacío si no hay datos
+                return $datos ?: []; // Devolver array vacío si no hay datos
             } else {
                 $resultado = $this->conexion->query($sql);
 
@@ -134,7 +135,7 @@ class MecanicoPepe
                 return $resultado->fetch_all(MYSQLI_ASSOC) ?: [];
             }
         } catch (Exception $e) {
-            error_log("[MecanicoPepe] Error executeQuery: " . $e->getMessage());
+            error_log("Error executeQuery: " . $e->getMessage());
             throw $e;
         }
     }
@@ -149,20 +150,9 @@ class MecanicoPepe
     {
         try {
             $this->verificarConexion();
-
-            $resultado = $this->conexion->query($sql);
-
-            if ($resultado === false) {
-                throw new Exception(
-                    "Error en query: " . $this->conexion->error,
-                );
-            }
-
-            return $resultado;
+            return $this->conexion->query($sql);
         } catch (Exception $e) {
-            error_log(
-                "[MecanicoPepe] Error executeNonQuery: " . $e->getMessage(),
-            );
+            error_log("Error executeNonQuery: " . $e->getMessage());
             throw $e;
         }
     }
@@ -187,12 +177,6 @@ class MecanicoPepe
 
             if (!empty($parametros)) {
                 $tipos = $this->detectarTipos($parametros);
-
-                // Validar cantidad de parámetros
-                if (strlen($tipos) !== count($parametros)) {
-                    throw new Exception("Cantidad de parámetros no coincide");
-                }
-
                 $stmt->bind_param($tipos, ...$parametros);
             }
 
@@ -200,18 +184,11 @@ class MecanicoPepe
                 throw new Exception("Error execute: " . $stmt->error);
             }
 
-            // Guardar filas afectadas antes de cerrar
-            $filasAfectadas = $stmt->affected_rows;
-
             $stmt->close();
 
-            // Retornar cantidad de filas afectadas (0 o más es éxito, -1 es error)
-            return $filasAfectadas >= 0 ? true : false;
+            return true;
         } catch (Exception $e) {
-            error_log(
-                "[MecanicoPepe] Error executeNonQueryPrepared: " .
-                    $e->getMessage(),
-            );
+            error_log("Error executeNonQueryPrepared: " . $e->getMessage());
             throw $e;
         }
     }
@@ -247,14 +224,7 @@ class MecanicoPepe
 
     public function getLastInsertId()
     {
-        try {
-            return $this->conexion->insert_id;
-        } catch (Exception $e) {
-            error_log(
-                "[MecanicoPepe] Error getLastInsertId: " . $e->getMessage(),
-            );
-            return 0;
-        }
+        return $this->conexion->insert_id;
     }
 
     /*
@@ -265,14 +235,8 @@ class MecanicoPepe
 
     public function closeConnection()
     {
-        try {
-            if ($this->conexion) {
-                $this->conexion->close();
-            }
-        } catch (Exception $e) {
-            error_log(
-                "[MecanicoPepe] Error al cerrar conexión: " . $e->getMessage(),
-            );
+        if ($this->conexion) {
+            $this->conexion->close();
         }
     }
 
