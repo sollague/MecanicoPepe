@@ -1,51 +1,27 @@
 <?php
-<<<<<<< HEAD
 session_start();
 
-/*t
-|--------------------------------------------------------------------------
-| DATOS DE LA FACTURA
-|--------------------------------------------------------------------------
-*/
+// ================= DATOS DE LA FACTURA =================
 
 $servicios = $_SESSION["servicios"] ?? [];
-
 $total = $_SESSION["total"] ?? 0;
-
 $subtotal = $_SESSION["subtotal"] ?? 0;
-
 $iva = $_SESSION["iva"] ?? 0;
 
-/*
-|--------------------------------------------------------------------------
-| DATOS DEL CLIENTE
-|--------------------------------------------------------------------------
-*/
+// ================= DATOS DEL CLIENTE =================
 
 $cliente = $_SESSION["cliente"] ?? "";
-
 $cedula = $_SESSION["cedula"] ?? "";
-
 $correo = $_SESSION["correo"] ?? "";
-
 $telefono = $_SESSION["telefono"] ?? "";
-
 $tipoMantenimiento = $_SESSION["tipo_mantenimiento"] ?? "";
-
 $trabajos = $_SESSION["trabajos"] ?? "";
-
 $vehiculo = $_SESSION["vehiculo"] ?? "";
 
-/*
-|--------------------------------------------------------------------------
-| DATOS GENERALES
-|--------------------------------------------------------------------------
-*/
+// ================= DATOS GENERALES =================
 
 $fecha = $_SESSION["fecha"] ?? "";
-
 $factura_id = $_SESSION["factura_id"] ?? "";
-
 $mecanico = $_SESSION["mecanico"] ?? null;
 ?>
 
@@ -53,17 +29,12 @@ $mecanico = $_SESSION["mecanico"] ?? null;
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Factura</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
-          rel="stylesheet">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body class="bg-light">
@@ -74,22 +45,20 @@ $mecanico = $_SESSION["mecanico"] ?? null;
 
         <div class="card-body p-5">
 
+            <!-- HEADER -->
             <div class="text-center mb-5">
 
                 <h1 class="fw-bold text-primary">
-
                     🧾 Factura #<?= $factura_id ?>
-
                 </h1>
 
                 <p class="text-muted">
-
                     Taller Automotriz MecanicoPepe
-
                 </p>
 
             </div>
 
+            <!-- CLIENTE Y SERVICIO -->
             <div class="row mb-4">
 
                 <div class="col-md-6">
@@ -97,13 +66,9 @@ $mecanico = $_SESSION["mecanico"] ?? null;
                     <h4>👤 Cliente</h4>
 
                     <p><strong>Cliente:</strong> <?= $cliente ?></p>
-
                     <p><strong>Cédula:</strong> <?= $cedula ?></p>
-
                     <p><strong>Correo:</strong> <?= $correo ?></p>
-
                     <p><strong>Teléfono:</strong> <?= $telefono ?></p>
-
                     <p><strong>Vehículo:</strong> <?= $vehiculo ?></p>
 
                 </div>
@@ -112,35 +77,21 @@ $mecanico = $_SESSION["mecanico"] ?? null;
 
                     <h4>🔧 Servicio</h4>
 
-                    <p>
-                        <strong>Mecánico:</strong>
-                        <?= $mecanico["nombre"] ?? "" ?>
-                    </p>
-
-                    <p>
-                        <strong>Experiencia:</strong>
-                        <?= $mecanico["experiencia"] ?? "" ?>
-                    </p>
-
-                    <p>
-                        <strong>Rating:</strong>
-                        ⭐ <?= $mecanico["rating"] ?? "" ?>
-                    </p>
-
-                    <p>
-                        <strong>Fecha:</strong>
-                        <?= $fecha ?>
-                    </p>
-
-                    <p>
-                        <strong>Tipo:</strong>
-                        <?= $tipoMantenimiento ?>
-                    </p>
+                    <p><strong>Mecánico:</strong> <?= $mecanico["nombre"] ??
+                        "" ?></p>
+                    <p><strong>Experiencia:</strong> <?= $mecanico[
+                        "experiencia"
+                    ] ?? "" ?></p>
+                    <p><strong>Rating:</strong> ⭐ <?= $mecanico["rating"] ??
+                        "" ?></p>
+                    <p><strong>Fecha:</strong> <?= $fecha ?></p>
+                    <p><strong>Tipo:</strong> <?= $tipoMantenimiento ?></p>
 
                 </div>
 
             </div>
 
+            <!-- TRABAJOS -->
             <div class="mb-4">
 
                 <h4>📝 Trabajos realizados</h4>
@@ -153,49 +104,31 @@ $mecanico = $_SESSION["mecanico"] ?? null;
 
             </div>
 
-            <h4 class="mb-3">
-
-                ⚙️ Servicios
-
-            </h4>
+            <!-- SERVICIOS -->
+            <h4 class="mb-3">⚙️ Servicios</h4>
 
             <div class="table-responsive">
 
                 <table class="table table-bordered table-hover">
 
                     <thead class="table-dark">
-
                         <tr>
-
                             <th>Servicio</th>
-
-                            <th class="text-end">
-                                Precio
-                            </th>
-
+                            <th class="text-end">Precio</th>
                         </tr>
-
                     </thead>
 
                     <tbody>
 
-                    <?php foreach ($servicios as $s): ?>
-
-                        <tr>
-
-                            <td>
-                                <?= $s["nombre"] ?>
-                            </td>
-
-                            <td class="text-end">
-
-                                $<?= number_format($s["precio"], 2) ?>
-
-                            </td>
-
-                        </tr>
-
-                    <?php endforeach; ?>
+                        <?php foreach ($servicios as $s): ?>
+                            <tr>
+                                <td><?= $s["nombre"] ?></td>
+                                <td class="text-end">$<?= number_format(
+                                    $s["precio"],
+                                    2,
+                                ) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
 
                     </tbody>
 
@@ -203,6 +136,7 @@ $mecanico = $_SESSION["mecanico"] ?? null;
 
             </div>
 
+            <!-- TOTALES -->
             <div class="row justify-content-end mt-4">
 
                 <div class="col-md-4">
@@ -210,33 +144,18 @@ $mecanico = $_SESSION["mecanico"] ?? null;
                     <ul class="list-group">
 
                         <li class="list-group-item d-flex justify-content-between">
-
                             <span>Subtotal</span>
-
-                            <strong>
-                                $<?= number_format($subtotal, 2) ?>
-                            </strong>
-
+                            <strong>$<?= number_format($subtotal, 2) ?></strong>
                         </li>
 
                         <li class="list-group-item d-flex justify-content-between">
-
                             <span>IVA 15%</span>
-
-                            <strong>
-                                $<?= number_format($iva, 2) ?>
-                            </strong>
-
+                            <strong>$<?= number_format($iva, 2) ?></strong>
                         </li>
 
                         <li class="list-group-item active d-flex justify-content-between">
-
                             <span>TOTAL</span>
-
-                            <strong>
-                                $<?= number_format($total, 2) ?>
-                            </strong>
-
+                            <strong>$<?= number_format($total, 2) ?></strong>
                         </li>
 
                     </ul>
@@ -245,20 +164,15 @@ $mecanico = $_SESSION["mecanico"] ?? null;
 
             </div>
 
+            <!-- BOTONES -->
             <div class="mt-5 d-flex gap-3">
 
-                <a href="dashboard_view.php"
-                   class="btn btn-secondary">
-
+                <a href="dashboard_view.php" class="btn btn-secondary">
                     ⬅ Volver
-
                 </a>
 
-                <button onclick="window.print()"
-                        class="btn btn-primary">
-
+                <button onclick="window.print()" class="btn btn-primary">
                     🖨 Imprimir
-
                 </button>
 
             </div>
@@ -272,129 +186,4 @@ $mecanico = $_SESSION["mecanico"] ?? null;
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
-
 </html>
-=======
-session_start(); // Inicia sesión para acceder a los datos guardados del proceso
-
-// ================= DATOS DE LA FACTURA =================
-
-// Servicios seleccionados por el usuario (si no hay, array vacío)
-$servicios = $_SESSION['servicios'] ?? [];
-
-// Total de la factura (si no existe, 0)
-$total = $_SESSION['total'] ?? 0;
-<<<<<<< HEAD
-$subtotal = $_SESSION['subtotal'] ?? 0;
-$iva = $_SESSION['iva'] ?? 0;
-=======
->>>>>>> ce0c85bcebcc1f77ba1f46c47826e98c9b2c414c
-
-// ================= DATOS DEL CLIENTE =================
-
-$cliente = $_SESSION['cliente'] ?? '';
-$cedula = $_SESSION['cedula'] ?? '';
-$correo = $_SESSION['correo'] ?? '';
-$telefono = $_SESSION['telefono'] ?? '';
-$tipoMantenimiento =$_SESSION['tipo_mantenimiento'] ?? '';
-$trabajos =$_SESSION['trabajos'] ?? '';
-$vehiculo = $_SESSION['vehiculo'] ?? '';
-
-// ================= DATOS GENERALES =================
-
-$fecha = $_SESSION['fecha'] ?? '';
-$factura_id = $_SESSION['factura_id'] ?? '';
-
-// Mecánico seleccionado (array con nombre, experiencia y rating)
-$mecanico = $_SESSION['mecanico'] ?? null;
-?>
-
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>Factura</title>
-
-    <!-- Estilos del sistema -->
-    <link rel="stylesheet" href="../styles/style.css">
-</head>
-
-<body>
-
-    <div class="container">
-
-        <!-- Título con número de factura -->
-        <h2>Factura #<?= $factura_id ?></h2>
-
-        <!-- ================= DATOS DEL CLIENTE ================= -->
-
-        <p><strong>Cliente:</strong> <?= $cliente ?></p>
-        <p><strong>Cédula:</strong> <?= $cedula ?></p>
-        <p><strong>Correo:</strong> <?= $correo ?></p>
-        <p><strong>Teléfono:</strong> <?= $telefono ?></p>
-        <p><strong>Vehículo:</strong> <?= $vehiculo ?></p>
-
-        <!-- ================= DATOS DEL MECÁNICO ================= -->
-
-        <p><strong>Mecánico:</strong> <?= $mecanico['nombre'] ?></p>
-        <p>
-            Exp: <?= $mecanico['experiencia'] ?> |
-            ⭐ <?= $mecanico['rating'] ?>
-        </p>
-
-        <!-- Fecha del servicio -->
-        <p><strong>Fecha:</strong> <?= $fecha ?></p>
-
-        <p>
-            <strong>Tipo:</strong>
-            <?= $tipoMantenimiento ?>
-        </p>
-
-        <p>
-            <strong>Trabajos realizados:</strong><br>
-            <?= $trabajos ?>
-        </p>
-
-        <hr>
-
-        <!-- ================= LISTA DE SERVICIOS ================= -->
-
-        <table>
-            <tr>
-                <th>Servicio</th>
-                <th>Precio</th>
-            </tr>
-
-            <!-- Recorre todos los servicios seleccionados -->
-            <?php foreach ($servicios as $s): ?>
-            <tr>
-                <td><?= $s['nombre'] ?></td>
-                <td>$<?= $s['precio'] ?></td>
-            </tr>
-            <?php endforeach; ?>
-
-        </table>
-
-        <!-- ================= TOTAL ================= -->
-
-<<<<<<< HEAD
-        <p><strong>Subtotal:</strong> $<?= number_format($subtotal, 2) ?></p>
-
-        <p><strong>IVA 15%:</strong> $<?= number_format($iva, 2) ?></p>
-
-        <p class="total">
-            <strong>Total:</strong>
-            $<?= number_format($total, 2) ?>
-        </p>
-=======
-        <p class="total">Total: $<?= $total ?></p>
->>>>>>> ce0c85bcebcc1f77ba1f46c47826e98c9b2c414c
-
-        <!-- Botón para volver al dashboard -->
-        <a href="dashboard_view.php">⬅ Volver</a>
-
-    </div>
-</body>
-
-</html>
->>>>>>> 6e33843f9af25084783d67889ee1aa4dc72cf2cf
