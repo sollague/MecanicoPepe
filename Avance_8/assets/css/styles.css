@@ -1,0 +1,43 @@
+/* Estilos globales para toda la aplicación */
+body {
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.bg-soft {
+  background: #f8f9fa;
+}
+
+.card {
+  border-radius: 1rem;
+}
+
+.btn-primary,
+.btn-success,
+.btn-dark,
+.btn-warning,
+.btn-danger {
+  border-radius: 0.75rem;
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+}
+
+.text-primary {
+  color: #0d6efd !important;
+}
+
+.form-control:focus {
+  box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.25);
+}
+
+.badge {
+  font-size: 0.85rem;
+}
+
+@media (max-width: 767px) {
+  .card-body {
+    padding: 1.5rem !important;
+  }
+}
